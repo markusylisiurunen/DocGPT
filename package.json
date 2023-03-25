@@ -1,0 +1,24 @@
+{
+  "name": "docgpt",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18.15.x"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@google-cloud/vision": "^3.1.2",
+    "@supercharge/promise-pool": "^2.4.0",
+    "dotenv": "^16.0.3",
+    "minimist": "^1.2.8",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node18-strictest": "^1.0.0",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^18.15.9",
+    "prettier": "^2.8.6",
+    "typescript": "^5.0.2"
+  }
+}
