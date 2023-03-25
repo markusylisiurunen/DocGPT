@@ -12,6 +12,7 @@
     "@supercharge/promise-pool": "^2.4.0",
     "dotenv": "^16.0.3",
     "minimist": "^1.2.8",
+    "openai": "^3.2.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

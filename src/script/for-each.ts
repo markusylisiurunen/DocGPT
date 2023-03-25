@@ -1,8 +1,10 @@
 import vision from "@google-cloud/vision";
 import { PromisePool } from "@supercharge/promise-pool";
 import minimist from "minimist";
+import * as openai from "openai";
 import { z } from "zod";
 import { makeLazyDataset } from "../fs";
+import { makeSimplePromptStrategy } from "../prompt/strategy/simple";
 import { runSafely } from "../util";
 
 async function performCloudVisionOCR(argv: minimist.ParsedArgs) {
@@ -64,10 +66,64 @@ async function performCloudVisionOCR(argv: minimist.ParsedArgs) {
   await client.close();
 }
 
+async function performEvaluation(argv: minimist.ParsedArgs) {
+  const args = z.object({ dataset: z.string() }).parse(argv);
+  const dataset = makeLazyDataset(args.dataset);
+  console.log(`performing evaluation for dataset "${args.dataset}"`);
+  const dataPoints = await dataset.listDataPoints();
+  const { errors } = await PromisePool.for(dataPoints)
+    .withConcurrency(8)
+    .process(async (dataPoint) => {
+      console.log(`working on data point "${dataPoint.id}"`);
+      // TODO:
+      const api = new openai.OpenAIApi(
+        new openai.Configuration({
+          apiKey: process.env["OPENAI_API_KEY"] as string,
+        })
+      );
+      try {
+        const completion = await api.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: await makeSimplePromptStrategy().getPromptForDatapoint(dataPoint) }],
+          temperature: 0,
+          n: 1,
+        });
+        // console.log("result: ", completion.data.choices[0]?.message?.content);
+        try {
+          const regexp = new RegExp("(```json(.)+```)", "g");
+          let content = completion.data.choices[0]?.message?.content ?? "";
+          content = content.replaceAll("\n", " ");
+          const result = content.match(regexp);
+          if (result) {
+            console.log(JSON.parse(result[0].split("```json")[1]?.split("```")[0]!));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } catch (error) {
+        if ((error as any).response) {
+          console.log((error as any).response.status);
+          console.log((error as any).response.data);
+        } else {
+          console.log((error as any).message);
+        }
+      }
+    });
+  if (errors.length > 0) {
+    console.log(`received the following errors while processing the data points`);
+    for (const error of errors) {
+      console.log(`  ${error.message}`);
+      // console.log(error);
+    }
+  }
+  console.log("done processing");
+}
+
 async function main() {
   // configure available actions
   const actions: Record<string, (argv: minimist.ParsedArgs) => Promise<void>> = {};
   actions["cloud-vision-ocr"] = performCloudVisionOCR;
+  actions["eval"] = performEvaluation;
   // parse args
   const argv = minimist(process.argv.slice(2));
   const args = z.object({ action: z.string() }).parse(argv);
