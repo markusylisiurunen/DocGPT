@@ -93,18 +93,6 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
           completion.data.choices[0]?.message?.content ?? ""
         );
         console.log(parsed);
-        // console.log("result: ", completion.data.choices[0]?.message?.content);
-        // try {
-        //   const regexp = new RegExp("(```json(.)+```)", "g");
-        //   let content = completion.data.choices[0]?.message?.content ?? "";
-        //   content = content.replaceAll("\n", " ");
-        //   const result = content.match(regexp);
-        //   if (result) {
-        //     console.log(JSON.parse(result[0].split("```json")[1]?.split("```")[0]!));
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
       } catch (error) {
         if ((error as any).response) {
           console.log((error as any).response.status);
@@ -118,7 +106,6 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
     console.log(`received the following errors while processing the data points`);
     for (const error of errors) {
       console.log(`  ${error.message}`);
-      // console.log(error);
     }
   }
   console.log("done processing");
