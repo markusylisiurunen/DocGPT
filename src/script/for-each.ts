@@ -84,22 +84,27 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
       try {
         const completion = await api.createChatCompletion({
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: await makeSimplePromptStrategy().getPromptForDatapoint(dataPoint) }],
+          messages: [{ role: "user", content: await makeSimplePromptStrategy().getPrompt(dataPoint) }],
           temperature: 0,
           n: 1,
         });
+        const parsed = await makeSimplePromptStrategy().parseCompletion(
+          dataPoint,
+          completion.data.choices[0]?.message?.content ?? ""
+        );
+        console.log(parsed);
         // console.log("result: ", completion.data.choices[0]?.message?.content);
-        try {
-          const regexp = new RegExp("(```json(.)+```)", "g");
-          let content = completion.data.choices[0]?.message?.content ?? "";
-          content = content.replaceAll("\n", " ");
-          const result = content.match(regexp);
-          if (result) {
-            console.log(JSON.parse(result[0].split("```json")[1]?.split("```")[0]!));
-          }
-        } catch (error) {
-          console.log(error);
-        }
+        // try {
+        //   const regexp = new RegExp("(```json(.)+```)", "g");
+        //   let content = completion.data.choices[0]?.message?.content ?? "";
+        //   content = content.replaceAll("\n", " ");
+        //   const result = content.match(regexp);
+        //   if (result) {
+        //     console.log(JSON.parse(result[0].split("```json")[1]?.split("```")[0]!));
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
       } catch (error) {
         if ((error as any).response) {
           console.log((error as any).response.status);

@@ -104,4 +104,9 @@ dist
 .tern-port
 
 # DocGPT
+bucket
 build
+
+data/*
+!data/.gitkeep
+!data/example
