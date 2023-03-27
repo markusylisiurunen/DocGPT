@@ -5,14 +5,22 @@ import * as openai from "openai";
 import { z } from "zod";
 import { makeLazyDataset } from "../fs";
 import { makeSimplePromptStrategy } from "../prompt/strategy/simple";
-import { runSafely } from "../util";
+import {
+  compareDates,
+  compareNumbers,
+  compareStrings,
+  computeF1Score,
+  computePrecision,
+  computeRecall,
+  runSafely,
+} from "../util";
 
 async function performCloudVisionOCR(argv: minimist.ParsedArgs) {
   const client = new vision.ImageAnnotatorClient();
   const args = z.object({ dataset: z.string() }).parse(argv);
   const dataset = makeLazyDataset(args.dataset);
   console.log(`performing OCR for dataset "${args.dataset}"`);
-  const dataPoints = await dataset.listDataPoints();
+  const dataPoints = await dataset.listDataPoints("eval"); // FIXME:
   const { errors } = await PromisePool.for(dataPoints)
     .withConcurrency(8)
     .process(async (dataPoint) => {
@@ -68,9 +76,11 @@ async function performCloudVisionOCR(argv: minimist.ParsedArgs) {
 
 async function performEvaluation(argv: minimist.ParsedArgs) {
   const args = z.object({ dataset: z.string() }).parse(argv);
+  const knownLabels = ["COMPANY", "ADDRESS", "DATE", "TOTAL"];
   const dataset = makeLazyDataset(args.dataset);
   console.log(`performing evaluation for dataset "${args.dataset}"`);
-  const dataPoints = await dataset.listDataPoints();
+  const dataPoints = (await dataset.listDataPoints("eval")).slice(0, 8); // FIXME:
+  const results: { groundTruth: Record<string, string | null>; prediction: Record<string, string | null> }[] = [];
   const { errors } = await PromisePool.for(dataPoints)
     .withConcurrency(8)
     .process(async (dataPoint) => {
@@ -92,7 +102,20 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
           dataPoint,
           completion.data.choices[0]?.message?.content ?? ""
         );
-        console.log(parsed);
+        // compute the F1-score
+        const _groundTruthContent = (await dataPoint.loadFile("ground-truth.json")).toString("utf-8");
+        const _groundTruthParsed = z.record(z.array(z.string())).parse(JSON.parse(_groundTruthContent));
+        const groundTruth = Object.entries(_groundTruthParsed).reduce(
+          (acc, [k, v]) => (knownLabels.includes(k) ? { ...acc, [k]: v[0]! } : acc),
+          knownLabels.reduce((acc, label) => ({ ...acc, [label]: null }), {} as Record<string, string | null>)
+        );
+        const prediction = Object.entries(parsed).reduce(
+          (acc, [k, v]) => (knownLabels.includes(k) ? { ...acc, [k]: v ?? null } : acc),
+          knownLabels.reduce((acc, label) => ({ ...acc, [label]: null }), {} as Record<string, string | null>)
+        );
+        results.push({ groundTruth, prediction });
+        // console.log("ground truth: ", JSON.stringify(groundTruth));
+        // console.log("completion: ", JSON.stringify(parsed));
       } catch (error) {
         if ((error as any).response) {
           console.log((error as any).response.status);
@@ -107,6 +130,49 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
     for (const error of errors) {
       console.log(`  ${error.message}`);
     }
+  }
+  function matcher(label: string, a: string, b: string): boolean {
+    if (label === "DATE") return compareDates()(a, b);
+    if (label == "TOTAL") return compareNumbers()(a, b);
+    return compareStrings(2)(a, b);
+  }
+  const precision = computePrecision(
+    results.map((r) => r.prediction),
+    results.map((r) => r.groundTruth),
+    matcher
+  );
+  const recall = computeRecall(
+    results.map((r) => r.prediction),
+    results.map((r) => r.groundTruth),
+    matcher
+  );
+  const f1Score = computeF1Score(
+    results.map((r) => r.prediction),
+    results.map((r) => r.groundTruth),
+    matcher
+  );
+  console.log(
+    "aggregated: ",
+    JSON.stringify({ precision: precision.toFixed(4), recall: recall.toFixed(4), f1: f1Score.toFixed(4) })
+  );
+  for (const label of knownLabels) {
+    const prediction = results.map((r) =>
+      Object.entries(r.prediction)
+        .filter(([l]) => l === label)
+        .reduce((acc, [key, v]) => ({ ...acc, [key]: v }), {} as Record<string, string | null>)
+    );
+    const groundTruth = results.map((r) =>
+      Object.entries(r.groundTruth)
+        .filter(([l]) => l === label)
+        .reduce((acc, [key, v]) => ({ ...acc, [key]: v }), {} as Record<string, string | null>)
+    );
+    const precision = computePrecision(prediction, groundTruth, matcher);
+    const recall = computeRecall(prediction, groundTruth, matcher);
+    const f1Score = computeF1Score(prediction, groundTruth, matcher);
+    console.log(
+      `${label}: `,
+      JSON.stringify({ precision: precision.toFixed(4), recall: recall.toFixed(4), f1: f1Score.toFixed(4) })
+    );
   }
   console.log("done processing");
 }

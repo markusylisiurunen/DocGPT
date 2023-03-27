@@ -50,9 +50,36 @@ export function makeSimplePromptStrategy(): PromptStrategy {
       const [, code] = matches ?? [];
       if (code) {
         // try to parse the code block as JSON
+        const dateOfPurchaseSchema = z.object({ dateOfPurchase: z.string().nullable() });
+        const totalAmountSchema = z.object({ totalAmount: z.number().or(z.string()).nullable() });
+        const vendorCitySchema = z.object({ vendorCity: z.string().nullable() });
+        const vendorNameSchema = z.object({ vendorName: z.string().nullable() });
+        const vendorPostalCodeSchema = z.object({ vendorPostalCode: z.string().nullable() });
+        const vendorStreetSchema = z.object({ vendorStreet: z.string().nullable() });
         try {
           const asJSON = JSON.parse(code);
-          return asJSON;
+          const dateOfPurchase = dateOfPurchaseSchema.safeParse(asJSON);
+          const totalAmount = totalAmountSchema.safeParse(asJSON);
+          const vendorCity = vendorCitySchema.safeParse(asJSON);
+          const vendorName = vendorNameSchema.safeParse(asJSON);
+          const vendorPostalCode = vendorPostalCodeSchema.safeParse(asJSON);
+          const vendorStreet = vendorStreetSchema.safeParse(asJSON);
+          // construct the labels
+          const ADDRESS =
+            [
+              vendorStreet.success ? vendorStreet.data.vendorStreet ?? [] : [],
+              vendorPostalCode.success ? vendorPostalCode.data.vendorPostalCode ?? [] : [],
+              vendorCity.success ? vendorCity.data.vendorCity ?? [] : [],
+            ]
+              .flatMap((_) => _)
+              .join(" ") || null;
+          const COMPANY = vendorName.success ? vendorName.data.vendorName ?? null : null;
+          const DATE = dateOfPurchase.success ? dateOfPurchase.data.dateOfPurchase ?? null : null;
+          const TOTAL =
+            totalAmount.success && totalAmount.data.totalAmount !== null
+              ? totalAmount.data.totalAmount.toString()
+              : null;
+          return { ADDRESS, COMPANY, DATE, TOTAL };
         } catch (error) {
           return {};
         }
