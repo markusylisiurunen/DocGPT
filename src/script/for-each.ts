@@ -79,10 +79,10 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
   const knownLabels = ["COMPANY", "ADDRESS", "DATE", "TOTAL"];
   const dataset = makeLazyDataset(args.dataset);
   console.log(`performing evaluation for dataset "${args.dataset}"`);
-  const dataPoints = (await dataset.listDataPoints("eval")).slice(0, 8); // FIXME:
+  const dataPoints = (await dataset.listDataPoints("eval")).slice(32, 32 + 64); // FIXME:
   const results: { groundTruth: Record<string, string | null>; prediction: Record<string, string | null> }[] = [];
   const { errors } = await PromisePool.for(dataPoints)
-    .withConcurrency(8)
+    .withConcurrency(10)
     .process(async (dataPoint) => {
       console.log(`working on data point "${dataPoint.id}"`);
       // TODO:

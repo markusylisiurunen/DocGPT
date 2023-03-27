@@ -3,7 +3,7 @@ import type { PromptStrategy } from "../types";
 
 export function makeSimplePromptStrategy(): PromptStrategy {
   return {
-    async init(_dataset) {
+    async init() {
       return;
     },
 
