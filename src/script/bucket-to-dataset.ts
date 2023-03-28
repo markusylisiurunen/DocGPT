@@ -8,13 +8,13 @@ function isTrainSample(_id: string): boolean {
   return false;
 }
 
-function annotationsToGroudTruth(annotations: string): Record<string, string[]> {
+function annotationsToGroundTruth(annotations: string): Record<string, string[]> {
   const result: Record<string, string[]> = {};
   const rows = parseCSV(annotations, { delimiter: ";", columns: false });
   for (const row of rows) {
     if (row.length === 0) continue;
-    const [, , , , text, bioLabel] = row;
-    const [tag, label] = bioLabel?.split("-") ?? [];
+    const [, , , , text, iobLabel] = row;
+    const [tag, label] = iobLabel?.split("-") ?? [];
     if (tag === "O") continue;
     if (!text || !tag || !label) throw new Error("expected an annotation row to be of known format");
     result[label] = result[label] ?? [];
@@ -24,6 +24,38 @@ function annotationsToGroudTruth(annotations: string): Record<string, string[]> 
       const idx = result[label]!.length - 1;
       result[label]![idx] = result[label]![idx]! + " " + text;
     }
+  }
+  return result;
+}
+
+type CloudVisionTextSegment = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  text: string;
+  label: string;
+};
+
+function annotationsToCloudVision(annotations: string): CloudVisionTextSegment[] {
+  const labels = ["DATE", "TOTAL", "COMPANY", "ADDRESS"];
+  const result: CloudVisionTextSegment[] = [];
+  const rows = parseCSV(annotations, { delimiter: ";", columns: false });
+  for (const row of rows) {
+    if (row.length === 0) continue;
+    const [x, y, width, height, text, iobLabel] = row;
+    const [tag, label] = iobLabel?.split("-") ?? [];
+    if (!x || !y || !width || !height || !text || !tag || (tag !== "O" && !label)) {
+      throw new Error("expected an annotation row to be of known format");
+    }
+    result.push({
+      x: parseFloat(x),
+      y: parseFloat(y),
+      width: parseFloat(width),
+      height: parseFloat(height),
+      text: text,
+      label: tag === "O" ? "OTHER" : labels.includes(label) ? label : "OTHER",
+    });
   }
   return result;
 }
@@ -59,7 +91,11 @@ async function main() {
     // write the annotations
     await fs.writeFile(
       path.resolve(basePath, id, `ground-truth.json`),
-      JSON.stringify(annotationsToGroudTruth(annotationContent.toString("utf-8")))
+      JSON.stringify(annotationsToGroundTruth(annotationContent.toString("utf-8")))
+    );
+    await fs.writeFile(
+      path.resolve(basePath, id, `cloud-vision.json`),
+      JSON.stringify(annotationsToCloudVision(annotationContent.toString("utf-8")))
     );
   }
 }

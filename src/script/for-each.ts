@@ -4,7 +4,7 @@ import minimist from "minimist";
 import * as openai from "openai";
 import { z } from "zod";
 import { makeLazyDataset } from "../fs";
-import { makeSimplePromptStrategy } from "../prompt/strategy/simple";
+import { makeICLD3IEStrategy } from "../prompt/strategy/icl-d3ie";
 import {
   compareDates,
   compareNumbers,
@@ -79,10 +79,14 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
   const knownLabels = ["COMPANY", "ADDRESS", "DATE", "TOTAL"];
   const dataset = makeLazyDataset(args.dataset);
   console.log(`performing evaluation for dataset "${args.dataset}"`);
-  const dataPoints = (await dataset.listDataPoints("eval")).slice(32, 32 + 64); // FIXME:
+  const startIdx = 0; // Math.floor(Math.random() * 99);
+  const totalSamples = 16; // Math.floor(Math.random() * 99);
+  const dataPoints = (await dataset.listDataPoints("eval")).slice(startIdx, startIdx + totalSamples); // FIXME:
   const results: { groundTruth: Record<string, string | null>; prediction: Record<string, string | null> }[] = [];
+  const promptStrategy = makeICLD3IEStrategy();
+  await promptStrategy.init(dataset);
   const { errors } = await PromisePool.for(dataPoints)
-    .withConcurrency(10)
+    .withConcurrency(12)
     .process(async (dataPoint) => {
       console.log(`working on data point "${dataPoint.id}"`);
       // TODO:
@@ -92,13 +96,16 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
         })
       );
       try {
+        const prompt = await promptStrategy.getPrompt(dataPoint);
+        console.log("\n\n", prompt.join("\n\n"), "\n\n");
+        if (Math.random() < 1) return;
         const completion = await api.createChatCompletion({
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: await makeSimplePromptStrategy().getPrompt(dataPoint) }],
+          messages: [{ role: "user", content: prompt.join("\n\n") }],
           temperature: 0,
           n: 1,
         });
-        const parsed = await makeSimplePromptStrategy().parseCompletion(
+        const parsed = await promptStrategy.parseCompletion(
           dataPoint,
           completion.data.choices[0]?.message?.content ?? ""
         );
@@ -114,8 +121,6 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
           knownLabels.reduce((acc, label) => ({ ...acc, [label]: null }), {} as Record<string, string | null>)
         );
         results.push({ groundTruth, prediction });
-        // console.log("ground truth: ", JSON.stringify(groundTruth));
-        // console.log("completion: ", JSON.stringify(parsed));
       } catch (error) {
         if ((error as any).response) {
           console.log((error as any).response.status);
@@ -132,9 +137,19 @@ async function performEvaluation(argv: minimist.ParsedArgs) {
     }
   }
   function matcher(label: string, a: string, b: string): boolean {
-    if (label === "DATE") return compareDates()(a, b);
-    if (label == "TOTAL") return compareNumbers()(a, b);
-    return compareStrings(2)(a, b);
+    if (label === "DATE") {
+      const match = compareDates()(a, b);
+      // if (!match) console.log(`${label}: "${a}" / "${b}"`);
+      return match;
+    }
+    if (label == "TOTAL") {
+      const match = compareNumbers()(a, b);
+      // if (!match) console.log(`${label}: "${a}" / "${b}"`);
+      return match;
+    }
+    const match = compareStrings(Math.ceil(0.2 * Math.max(a.length, b.length)))(a, b);
+    // if (!match) console.log(`${label}: "${a}" / "${b}"`);
+    return match;
   }
   const precision = computePrecision(
     results.map((r) => r.prediction),
