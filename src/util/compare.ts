@@ -119,7 +119,7 @@ export function compareDates() {
 export function compareNumbers() {
   return (a: string | null, b: string | null): boolean => {
     function normalizeAny(value: string): string | null {
-      const numberRegexp = new RegExp(/([0-9]{1,}(?:(\,|\.)[0-9]{1,2})?)/, "g");
+      const numberRegexp = new RegExp(/([0-9]{1,}(?:\s?(\,|\.)\s?[0-9]{1,2})?)/, "g");
       const candidates: string[] = [];
       while (true) {
         const match = numberRegexp.exec(value);
@@ -128,7 +128,7 @@ export function compareNumbers() {
           candidates.push(match[1]!);
         }
       }
-      const num = Math.max(-1, ...candidates.flatMap((c) => parseFloat(c.replaceAll(",", "."))));
+      const num = Math.max(-1, ...candidates.flatMap((c) => parseFloat(c.replaceAll(" ", "").replaceAll(",", "."))));
       return num === -1 ? null : (num * 100).toString();
     }
     // compare

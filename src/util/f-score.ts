@@ -48,7 +48,7 @@ export function computePrecision(
   matcher?: (label: string, a: string, b: string) => boolean
 ): number {
   const { tp, fp } = computeCounts(predictions, targets, matcher);
-  return tp / (tp + fp + 1e-12);
+  return Math.round((tp / (tp + fp + 1e-12)) * 1000) / 1000;
 }
 
 export function computeRecall(
@@ -57,7 +57,7 @@ export function computeRecall(
   matcher?: (label: string, a: string, b: string) => boolean
 ): number {
   const { tp, fn } = computeCounts(predictions, targets, matcher);
-  return tp / (tp + fn + 1e-12);
+  return Math.round((tp / (tp + fn + 1e-12)) * 1000) / 1000;
 }
 
 export function computeF1Score(
@@ -66,5 +66,5 @@ export function computeF1Score(
   matcher?: (label: string, a: string, b: string) => boolean
 ): number {
   const { tp, fp, fn } = computeCounts(predictions, targets, matcher);
-  return tp / (tp + 0.5 * (fp + fn) + 1e-12);
+  return Math.round((tp / (tp + 0.5 * (fp + fn) + 1e-12)) * 1000) / 1000;
 }

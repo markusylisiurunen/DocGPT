@@ -11,6 +11,7 @@ export interface LazyDataPoint {
 }
 
 export interface LazyDataset {
+  readonly name: string;
   listDataPoints(segment: string): Promise<LazyDataPoint[]>;
 }
 
@@ -37,6 +38,7 @@ export function makeLazyDataPoint(dataset: string, segment: string, id: string):
 
 export function makeLazyDataset(dataset: string): LazyDataset {
   return {
+    name: dataset,
     async listDataPoints(segment) {
       const entries = await fs.readdir(path.resolve("data", dataset, segment), {
         encoding: "utf-8",

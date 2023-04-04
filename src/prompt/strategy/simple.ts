@@ -3,6 +3,8 @@ import type { PromptStrategy } from "../types";
 
 export function makeSimplePromptStrategy(): PromptStrategy {
   return {
+    name: "simple",
+
     async init() {
       return;
     },

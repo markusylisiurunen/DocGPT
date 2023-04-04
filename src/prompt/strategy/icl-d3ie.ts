@@ -122,6 +122,7 @@ export function makeICLD3IEStrategy(): PromptStrategy {
     formatting: [],
   };
   return {
+    name: "icl-d3ie",
     async init(dataset) {
       const dataPoints = await dataset.listDataPoints("eval");
       // hard demo 1: a receipt from K-Supermarket Redi

@@ -2,8 +2,9 @@
   "extends": "@tsconfig/node18-strictest/tsconfig.json",
   "verbatimModuleSyntax": true,
   "compilerOptions": {
-    "outDir": "build",
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "noUnusedLocals": false,
+    "outDir": "build"
   },
   "include": ["src"]
 }
