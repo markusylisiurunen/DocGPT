@@ -21,11 +21,22 @@ const builder = {
   textAnswer: (answer: string) => {
     return "A: " + answer;
   },
-  jsonAnswer: (fields: { total?: string; date?: string; company?: string; address?: string }) => {
+  jsonAnswer: (fields: {
+    total?: string;
+    vat10?: string;
+    vat14?: string;
+    vat24?: string;
+    date?: string;
+    company?: string;
+    address?: string;
+  }) => {
     return (
-      "A: " +
+      "Labels: " +
       JSON.stringify({
         total: fields.total ?? null,
+        vat_10: fields.vat10 ?? null,
+        vat_14: fields.vat14 ?? null,
+        vat_24: fields.vat24 ?? null,
         date: fields.date ?? null,
         company: fields.company ?? null,
         address: fields.address ?? null,
@@ -49,10 +60,10 @@ export function makeSimplePromptStrategy(): PromptStrategy {
       const question = builder.lines(
         // label mapping
         builder.paragraph(
-          `Given a list of OCR text segments as context, you should respond with JSON having following fields: "total", "date", "company", "address".`,
+          `Given a list of OCR text segments as context, you should respond with JSON having following fields: "total", "date", "company", "address", "vat_10", "vat_14", "vat_24".`,
           `Do not include any other fields.`,
           `Field values can only include preceding text segments joined together.`,
-          `For example, given "A", "B", and "C", "A B" and "B C" are valid but "A C" is not.`,
+          `For example, given "A","b","C" as context, "A b" and "b C" are valid but "A C" is not.`,
         ),
         builder.divider(),
         builder.question(`What can be labeled "total"?`),
@@ -63,6 +74,12 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.textAnswer(`Text that indicates the name of the company which issued the receipt.`),
         builder.question(`What can be labeled as "address"?`),
         builder.textAnswer(`Text that indicates a physical location such as street name, city, country, postal code, etc. Cannot be a fax, phone number, or any other ID.`),
+        builder.question(`What can be labeled as "vat_10"?`),
+        builder.textAnswer(`Text that indicates the portion of the total amount that was under 10 % VAT. Must be the gross amount (net + tax).`),
+        builder.question(`What can be labeled as "vat_14"?`),
+        builder.textAnswer(`Same as "vat_10" but for 14 % VAT.`),
+        builder.question(`What can be labeled as "vat_24"?`),
+        builder.textAnswer(`Same as "vat_10" but for 24 % VAT.`),
         // address examples
         builder.divider(),
         builder.lines(`Examples of text labeled as "address":`),
@@ -108,6 +125,13 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.context(`Yritys`, `/`, `Ala:`, `01837/5411`, `Credit`, `/`, `Veloitus`, `25,51`, `EUR`, `Visa`, `Contactless`),
         builder.jsonAnswer({ total: `25,51` }),
         builder.divider(),
+        builder.context(`YHTEENSÄ`, `EUR`, `76,04`, `PANKKIKORTTI`, `76,04`, `ALV`, `%`, `NETTO`, `VERO`, `BRUTTO`, `10,00`, `33,04`, `3,31`, `C`, `36,35`, `14,00`, `27,01`, `3,78`, `D`, `30,79`, `24,00`, `7,18`, `1,72`, `B`, `8,90`, `YHTEENSÄ`, `67,23`, `8,81`, `76,04`, `Veloitus`, `76,04`, `EUR`),
+        builder.jsonAnswer({ total: `76,04`, vat10: `36,35`, vat14: `30,79`, vat24: `8,90` }),
+        builder.question(`Why is "36,35" labeled "vat_10"?`),
+        builder.textAnswer(`Because it is to the right of "ALV 10,00 %" and below "brutto".`),
+        builder.question(`Why is "8,90" labeled "vat_24"?`),
+        builder.textAnswer(`Because it is to the right of "ALV 24,00 %" and below "brutto".`),
+        builder.divider(),
         builder.context(`K`, `-`, `Citymarket`, `Turku`, `Kupittaa`, `Avoinna`, `joka`, `päivä`, `24`, `h`, `Uudenmaantie`, `17`, `,`, `20700`, `Turku`, `kaupat`, `-`),
         builder.jsonAnswer({ company: `K - Citymarket Turku Kupittaa`, address: `Uudenmaantie 17 , 20700 Turku` }),
         builder.divider(),
@@ -116,7 +140,7 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         // the actual user-provided prompt
         builder.divider(),
         builder.context(...words),
-        `A:`,
+        `Labels:`,
       );
       return [question];
     },
@@ -131,6 +155,9 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         const dateSchema = z.object({ date: z.string().nullable() });
         const companySchema = z.object({ company: z.string().nullable() });
         const addressSchema = z.object({ address: z.string().nullable() });
+        const vat10Schema = z.object({ vat_10: z.number().or(z.string()).nullable() });
+        const vat14Schema = z.object({ vat_14: z.number().or(z.string()).nullable() });
+        const vat24Schema = z.object({ vat_24: z.number().or(z.string()).nullable() });
         try {
           const asJSON = JSON.parse(code);
           // ---
@@ -138,12 +165,18 @@ export function makeSimplePromptStrategy(): PromptStrategy {
           const date = dateSchema.safeParse(asJSON);
           const company = companySchema.safeParse(asJSON);
           const address = addressSchema.safeParse(asJSON);
+          const vat10 = vat10Schema.safeParse(asJSON);
+          const vat14 = vat14Schema.safeParse(asJSON);
+          const vat24 = vat24Schema.safeParse(asJSON);
           // ---
           const TOTAL = total.success ? total.data.total?.toString() ?? null : null;
           const DATE = date.success ? date.data.date ?? null : null;
           const ADDRESS = address.success ? address.data.address ?? null : null;
           const COMPANY = company.success ? company.data.company ?? null : null;
-          return { TOTAL, DATE, COMPANY, ADDRESS };
+          const TOTAL_TAX_10 = vat10.success ? vat10.data.vat_10?.toString() ?? null : null;
+          const TOTAL_TAX_14 = vat14.success ? vat14.data.vat_14?.toString() ?? null : null;
+          const TOTAL_TAX_24 = vat24.success ? vat24.data.vat_24?.toString() ?? null : null;
+          return { TOTAL, TOTAL_TAX_10, TOTAL_TAX_14, TOTAL_TAX_24, DATE, COMPANY, ADDRESS };
         } catch (error) {
           return {};
         }

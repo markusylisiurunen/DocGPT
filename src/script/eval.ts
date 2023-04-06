@@ -29,7 +29,7 @@ async function main() {
       strategy: z.string(),
     })
     .parse(argv);
-  const knownLabels = ["TOTAL", "DATE", "COMPANY", "ADDRESS"];
+  const knownLabels = ["TOTAL", "TOTAL_TAX_10", "TOTAL_TAX_14", "TOTAL_TAX_24", "DATE", "COMPANY", "ADDRESS"];
   const rng = seedrandom(args.seed);
   // init the dataset
   const dataset = makeLazyDataset(args.dataset);
@@ -81,11 +81,12 @@ async function main() {
       const prompt = await strategy.getPrompt(datapoint);
       // get the completion & parse it
       const answer = await api.createCompletion({
-        model: "text-davinci-003",
-        prompt: prompt.join("\n\n"),
         max_tokens: 512,
-        temperature: 0,
+        model: "text-davinci-003",
         n: 1,
+        prompt: prompt.join("\n\n"),
+        stop: `\n`,
+        temperature: 0,
       });
       const completion = await strategy.parseCompletion(datapoint, answer.data.choices[0]?.text ?? "");
       // construct the ground truth
@@ -124,7 +125,7 @@ async function main() {
       const match = compareDates()(a, b);
       return match;
     }
-    if (label == "TOTAL") {
+    if (label.startsWith("TOTAL")) {
       const match = compareNumbers()(a, b);
       return match;
     }
@@ -190,7 +191,7 @@ async function main() {
     const f1Str = result.f1.toFixed(3);
     const recallStr = result.recall.toFixed(3);
     const precisionStr = result.precision.toFixed(3);
-    const _prefix = `${prefix}:`.padEnd(16, " ");
+    const _prefix = `${prefix}:`.padEnd(24, " ");
     console.log(`${_prefix}f1-score (${f1Str}), recall (${recallStr}), precision (${precisionStr})`);
   };
   console.log("evaluation completed");
