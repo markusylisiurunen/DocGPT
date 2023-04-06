@@ -121,9 +121,11 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.divider(),
         builder.context(`PULLOPALAUTUS`, `10,30`, `-`, `YHTEENSÄ`, `25.51`, `KORTTITAPAHTUMA`, `Kortti:`, `Visa`),
         builder.labels({ total: `25.51` }),
+
         builder.divider(),
         builder.context(`Yritys`, `/`, `Ala:`, `01837/5411`, `Credit`, `/`, `Veloitus`, `25,51`, `EUR`, `Visa`, `Contactless`),
         builder.labels({ total: `25,51` }),
+
         builder.divider(),
         builder.context(`YHTEENSÄ`, `EUR`, `76,04`, `PANKKIKORTTI`, `76,04`, `ALV`, `%`, `NETTO`, `VERO`, `BRUTTO`, `10,00`, `33,04`, `3,31`, `C`, `36,35`, `14,00`, `27,01`, `3,78`, `D`, `30,79`, `24,00`, `7,18`, `1,72`, `B`, `8,90`, `YHTEENSÄ`, `67,23`, `8,81`, `76,04`, `Veloitus`, `76,04`, `EUR`),
         builder.labels({ total: `76,04`, vat10: `36,35`, vat14: `30,79`, vat24: `8,90` }),
@@ -131,14 +133,17 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.answer(`Because it is to the right of "ALV 10,00 %" and below "brutto".`),
         builder.question(`Why is "8,90" labeled "vat_24"?`),
         builder.answer(`Because it is to the right of "ALV 24,00 %" and below "brutto".`),
+
         builder.divider(),
         builder.context(`OUT`, `Total`, `(`, `incl`, `VAT`, `)`, `11`, `.90`, `TAX`, `%`, `AMOUNT`, `TAX`, `INCL.`, `TAX`, `:`, `14.00`, `%`, `11.90`, `1.46`, `P??te:`, `16413003`),
         builder.labels({ total: `11.90`, vat14: `11.90` }),
         builder.question(`Why is "11.90" labeled "vat_14"?`),
         builder.answer(`Because it is on the same line with "INCL. TAX" and "14.00%" (which is below "TAX %"), and below "AMOUNT".`),
+
         builder.divider(),
         builder.context(`K`, `-`, `Citymarket`, `Turku`, `Kupittaa`, `Avoinna`, `joka`, `päivä`, `24`, `h`, `Uudenmaantie`, `17`, `,`, `20700`, `Turku`, `kaupat`, `-`),
         builder.labels({ company: `K - Citymarket Turku Kupittaa`, address: `Uudenmaantie 17 , 20700 Turku` }),
+
         builder.divider(),
         builder.context(`PRISMA`, `HERTTONIEMI`, `010`, `7657`, `100`, `(0,0835`, `e`, `/`, `puh+0,`, `1209`, `e/min)`, `HOK-Elanto`, `Liiketoiminta`, `Oy,`, `1837957-3`, `4`, `K4`, `M000101`, `/`, `4392`, `20:51`, `9-11-2021`, `RED`, `CURRY`, `WITH`),
         builder.labels({ company: "PRISMA HERTTONIEMI", date: "9-11-2021" }),
