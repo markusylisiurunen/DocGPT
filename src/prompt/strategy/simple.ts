@@ -141,6 +141,16 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.answer(`Because it is on the same line with "INCL. TAX" and "14.00%" (which is below "TAX %"), and below "AMOUNT".`),
 
         builder.divider(),
+        builder.context(`Credit/Veloitus`, `9.83`, `EUR`, `Visa`, `Contactless`, `Verified`, `by`, `device`, `ALV`, `VEROTON`, `VERO`, `VEROLLINEN`, `1`, `24.00%`, `0.32`, `0.08`, `0.40`, `4`, `14.00%`, `8.27`, `1.16`, `9.43`, `YHTEENSÄ`, `8.59`, `1.24`, `9.83`, `Avoinna`),
+        builder.labels({ total: `9.83`, vat14: `9.43`, vat24: `0.40` }),
+        builder.question(`Why is "9.83" labeled "total"?`),
+        builder.answer(`Because it is on the same line with "YHTEENSÄ" and below "VEROLLINEN". It is also on the line with "Credit/Veloitus" and before "EUR".`),
+        builder.question(`Why is "9.43" labeled "vat_14"?`),
+        builder.answer(`Because it is on the same line with "14.00%" and below "VEROLLINEN".`),
+        builder.question(`Why is "0.40" labeled "vat_24"?`),
+        builder.answer(`Because it is on the same line with "24.00%" and below "VEROLLINEN".`),
+
+        builder.divider(),
         builder.context(`K`, `-`, `Citymarket`, `Turku`, `Kupittaa`, `Avoinna`, `joka`, `päivä`, `24`, `h`, `Uudenmaantie`, `17`, `,`, `20700`, `Turku`, `kaupat`, `-`),
         builder.labels({ company: `K - Citymarket Turku Kupittaa`, address: `Uudenmaantie 17 , 20700 Turku` }),
 
