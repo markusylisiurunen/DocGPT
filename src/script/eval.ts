@@ -3,8 +3,9 @@ import minimist from "minimist";
 import fs from "node:fs/promises";
 import path from "node:path";
 import * as openai from "openai";
+import seedrandom from "seedrandom";
 import { z } from "zod";
-import { makeLazyDataset } from "../fs";
+import { LazyDataPoint, makeLazyDataset } from "../fs";
 import type { PromptStrategy } from "../prompt";
 import { makeSimplePromptStrategy } from "../prompt";
 import { makeICLD3IEStrategy } from "../prompt/strategy/icl-d3ie";
@@ -19,15 +20,17 @@ import {
 } from "../util";
 
 async function main() {
-  const argv = minimist(process.argv.slice(2));
+  const argv = minimist(process.argv.slice(2), { string: ["dataset", "seed", "strategy"] });
   const args = z
     .object({
       dataset: z.string(),
-      strategy: z.string(),
       limit: z.number().nullable().default(null),
+      seed: z.string().default("42"),
+      strategy: z.string(),
     })
     .parse(argv);
-  const knownLabels = ["COMPANY", "ADDRESS", "DATE", "TOTAL"];
+  const knownLabels = ["TOTAL", "DATE", "COMPANY", "ADDRESS"];
+  const rng = seedrandom(args.seed);
   // init the dataset
   const dataset = makeLazyDataset(args.dataset);
   console.log(`performing evaluation for dataset "${args.dataset}" with strategy "${args.strategy}"`);
@@ -49,8 +52,18 @@ async function main() {
   let datapoints = await dataset.listDataPoints("eval");
   console.log(`read in ${datapoints.length} data points`);
   if (args.limit) {
+    const source = [...datapoints];
+    const target: LazyDataPoint[] = [];
+    while (source.length > 0 && target.length < args.limit) {
+      const idx = Math.floor(rng() * source.length);
+      const [item] = source.splice(idx, 1);
+      if (!item) {
+        throw new Error("error shuffling the limit number of data points");
+      }
+      target.push(item);
+    }
     console.log(`limit was set, limiting the data points to ${args.limit}`);
-    datapoints = datapoints.slice(0, args.limit);
+    datapoints = target;
   }
   // initialise OpenAI client
   const api = new openai.OpenAIApi(new openai.Configuration({ apiKey: process.env["OPENAI_API_KEY"] as string }));
@@ -67,13 +80,14 @@ async function main() {
       // construct the prompt
       const prompt = await strategy.getPrompt(datapoint);
       // get the completion & parse it
-      const answer = await api.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt.join("\n\n") }],
+      const answer = await api.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt.join("\n\n"),
+        max_tokens: 512,
         temperature: 0,
         n: 1,
       });
-      const completion = await strategy.parseCompletion(datapoint, answer.data.choices[0]?.message?.content ?? "");
+      const completion = await strategy.parseCompletion(datapoint, answer.data.choices[0]?.text ?? "");
       // construct the ground truth
       const groundTruthContent = (await datapoint.loadFile("ground-truth.json")).toString("utf-8");
       const groundTruthParsed = z.record(z.array(z.string())).parse(JSON.parse(groundTruthContent));
@@ -93,7 +107,14 @@ async function main() {
   }
   // evaluate the results
   type Evaluation = {
-    meta: { dataset: string; datapoints: string[]; strategy: string; timestamp: string };
+    meta: {
+      datapoints: string[];
+      dataset: string;
+      limit: number | null;
+      seed: string;
+      strategy: string;
+      timestamp: string;
+    };
     aggregated: { f1: number; recall: number; precision: number };
     by_label: { label: string; f1: number; recall: number; precision: number }[];
     missed: { id: string; label: string; groundTruth: string | null; predicted: string | null }[];
@@ -113,8 +134,10 @@ async function main() {
   const now = new Date();
   const evaluation: Evaluation = {
     meta: {
-      dataset: dataset.name,
       datapoints: datapoints.map((d) => d.id),
+      dataset: dataset.name,
+      limit: args.limit,
+      seed: args.seed,
       strategy: strategy.name,
       timestamp: now.toISOString(),
     },
