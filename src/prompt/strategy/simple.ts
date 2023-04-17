@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sortToReadingOrder, splitToLines } from "../../util/lines";
 import type { PromptStrategy } from "../types";
 
 const builder = {
@@ -54,7 +55,10 @@ export function makeSimplePromptStrategy(): PromptStrategy {
     async getPrompt(dataPoint) {
       // read in the Cloud Vision output
       const cloudVision = (await dataPoint.loadFile("cloud-vision.json")).toString("utf-8");
-      const words = z.array(z.object({ text: z.string() })).parse(JSON.parse(cloudVision));
+      const words = z
+        .array(z.object({ x: z.number(), y: z.number(), width: z.number(), height: z.number(), text: z.string() }))
+        .parse(JSON.parse(cloudVision));
+      const lines = splitToLines(sortToReadingOrder(words));
       // construct the prompt line by line
       // prettier-ignore
       const question = builder.lines(
@@ -64,6 +68,7 @@ export function makeSimplePromptStrategy(): PromptStrategy {
           `Do not include any other fields.`,
           `Field values can only include preceding text segments joined together.`,
           `For example, given "A","b","C" as context, "A b" and "b C" are valid but "A C" is not.`,
+          `"[LINE]" indicates a line break.`,
         ),
         builder.divider(),
         builder.question(`What can be labeled "total"?`),
@@ -71,7 +76,7 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.question(`What can be labeled "date"?`),
         builder.answer(`Text that indicates a specific date, such as year, month and day. Formats like "dd.MM.yyyy", "dd-MM-yyyy", "yyyy-MM-dd", "dd/MM/yyy", and so on.`),
         builder.question(`What can be labeled as "company"?`),
-        builder.answer(`Text that indicates the name of the company which issued the receipt.`),
+        builder.answer(`Text that indicates the name of the company which issued the receipt. Never includes the business ID.`),
         builder.question(`What can be labeled as "address"?`),
         builder.answer(`Text that indicates a physical location such as street name, city, country, postal code, etc. Cannot be a fax, phone number, or any other ID.`),
         builder.question(`What can be labeled as "vat_10"?`),
@@ -99,6 +104,7 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         ...[
           `RAVINTOLA KOREA HOUSE`,
           `PRISMA HERTTONIEMI`,
+          `Akateeminen Kirjakauppa`,
           `SALE HÄMEENKATU`,
           `K - Supermarket Redi`,
           `McDonald's Herttoniemi`,
@@ -116,18 +122,23 @@ export function makeSimplePromptStrategy(): PromptStrategy {
           `9-11-2021`,
           `12/9/2020`,
           `1-08-2019`,
+          `24.07.15`,
+          `11. 12. 2021`,
         ].map(t => `- ${t}`),
         // hard demonstrations TODO: not sure if these are the best examples, needs iteration...
         builder.divider(),
-        builder.context(`PULLOPALAUTUS`, `10,30`, `-`, `YHTEENSÄ`, `25.51`, `KORTTITAPAHTUMA`, `Kortti:`, `Visa`),
+        // source: 7684e55b4abc699cf4eb57c12ec943ecbe02675a
+        builder.context(`PULLOPALAUTUS`, `10,30`, `-`, `[LINE]`, `YHTEENSÄ`, `25.51`, `[LINE]`, `KORTTITAPAHTUMA`, `[LINE]`, `Kortti:`, `Visa`),
         builder.labels({ total: `25.51` }),
 
         builder.divider(),
-        builder.context(`Yritys`, `/`, `Ala:`, `01837/5411`, `Credit`, `/`, `Veloitus`, `25,51`, `EUR`, `Visa`, `Contactless`),
+        // source: 045339c952ffd24562e672cf00f34e985c51b418
+        builder.context(`Yritys`, `/`, `Ala:`, `01837/5411`, `[LINE]`, `Credit`, `/`, `Veloitus`, `25,51`, `EUR`, `[LINE]`, `Visa`, `Contactless`),
         builder.labels({ total: `25,51` }),
 
         builder.divider(),
-        builder.context(`YHTEENSÄ`, `EUR`, `76,04`, `PANKKIKORTTI`, `76,04`, `ALV`, `%`, `NETTO`, `VERO`, `BRUTTO`, `10,00`, `33,04`, `3,31`, `C`, `36,35`, `14,00`, `27,01`, `3,78`, `D`, `30,79`, `24,00`, `7,18`, `1,72`, `B`, `8,90`, `YHTEENSÄ`, `67,23`, `8,81`, `76,04`, `Veloitus`, `76,04`, `EUR`),
+        // source: ee9ef3bf21efb59875ad7f7ac35d9fba4298adaa
+        builder.context(`YHTEENSÄ`, `EUR`, `76,04`, `[LINE]`, `PANKKIKORTTI`, `76,04`, `[LINE]`, `ALV`, `%`, `NETTO`, `VERO`, `BRUTTO`, `[LINE]`, `10,00`, `33,04`, `3,31`, `C`, `36,35`, `[LINE]`, `14,00`, `27,01`, `3,78`, `D`, `30,79`, `[LINE]`, `24,00`, `7,18`, `1,72`, `B`, `8,90`, `[LINE]`, `YHTEENSÄ`, `67,23`, `8,81`, `76,04`, `[LINE]`, `Veloitus`, `[LINE]`, `76,04`, `EUR`),
         builder.labels({ total: `76,04`, vat10: `36,35`, vat14: `30,79`, vat24: `8,90` }),
         builder.question(`Why is "36,35" labeled "vat_10"?`),
         builder.answer(`Because it is to the right of "ALV 10,00 %" and below "brutto".`),
@@ -135,13 +146,15 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.answer(`Because it is to the right of "ALV 24,00 %" and below "brutto".`),
 
         builder.divider(),
-        builder.context(`OUT`, `Total`, `(`, `incl`, `VAT`, `)`, `11`, `.90`, `TAX`, `%`, `AMOUNT`, `TAX`, `INCL.`, `TAX`, `:`, `14.00`, `%`, `11.90`, `1.46`, `P??te:`, `16413003`),
+        // source: 2e023e7fee00b2d0116f98d2cd8b6b45cfb8ebfb
+        builder.context(`OUT`, `Total`, `(`, `incl`, `VAT`, `)`, `11`, `.90`, `[LINE]`, `TAX`, `%`, `AMOUNT`, `TAX`, `[LINE]`, `INCL.`, `TAX`, `:`, `14.00`, `%`, `11.90`, `1.46`, `[LINE]`, `P??te:`, `16413003`),
         builder.labels({ total: `11.90`, vat14: `11.90` }),
         builder.question(`Why is "11.90" labeled "vat_14"?`),
         builder.answer(`Because it is on the same line with "INCL. TAX" and "14.00%" (which is below "TAX %"), and below "AMOUNT".`),
 
         builder.divider(),
-        builder.context(`Credit/Veloitus`, `9.83`, `EUR`, `Visa`, `Contactless`, `Verified`, `by`, `device`, `ALV`, `VEROTON`, `VERO`, `VEROLLINEN`, `1`, `24.00%`, `0.32`, `0.08`, `0.40`, `4`, `14.00%`, `8.27`, `1.16`, `9.43`, `YHTEENSÄ`, `8.59`, `1.24`, `9.83`, `Avoinna`),
+        // source: 5f34e910e7b5137ad4b747827c5e1409dc653efd
+        builder.context(`Credit/Veloitus`, `9.83`, `EUR`, `[LINE]`, `Visa`, `Contactless`, `[LINE]`, `Verified`, `by`, `device`, `[LINE]`, `ALV`, `VEROTON`, `VERO`, `VEROLLINEN`, `[LINE]`, `1`, `24.00%`, `0.32`, `0.08`, `0.40`, `[LINE]`, `4`, `14.00%`, `8.27`, `1.16`, `9.43`, `[LINE]`, `YHTEENSÄ`, `8.59`, `1.24`, `9.83`, `[LINE]`, `Avoinna`),
         builder.labels({ total: `9.83`, vat14: `9.43`, vat24: `0.40` }),
         builder.question(`Why is "9.83" labeled "total"?`),
         builder.answer(`Because it is on the same line with "YHTEENSÄ" and below "VEROLLINEN". It is also on the line with "Credit/Veloitus" and before "EUR".`),
@@ -151,15 +164,18 @@ export function makeSimplePromptStrategy(): PromptStrategy {
         builder.answer(`Because it is on the same line with "24.00%" and below "VEROLLINEN".`),
 
         builder.divider(),
-        builder.context(`K`, `-`, `Citymarket`, `Turku`, `Kupittaa`, `Avoinna`, `joka`, `päivä`, `24`, `h`, `Uudenmaantie`, `17`, `,`, `20700`, `Turku`, `kaupat`, `-`),
+        // source: 0d4bd4424beb585e39412d360ed32b3d0776f0fa
+        builder.context(`K`, `-`, `Citymarket`, `Turku`, `Kupittaa`, `[LINE]`, `Avoinna`, `joka`, `päivä`, `24`, `h`, `[LINE]`, `Uudenmaantie`, `17`, `,`, `20700`, `Turku`, `[LINE]`, `kaupat`, `-`),
         builder.labels({ company: `K - Citymarket Turku Kupittaa`, address: `Uudenmaantie 17 , 20700 Turku` }),
 
         builder.divider(),
-        builder.context(`PRISMA`, `HERTTONIEMI`, `010`, `7657`, `100`, `(0,0835`, `e`, `/`, `puh+0,`, `1209`, `e/min)`, `HOK-Elanto`, `Liiketoiminta`, `Oy,`, `1837957-3`, `4`, `K4`, `M000101`, `/`, `4392`, `20:51`, `9-11-2021`, `RED`, `CURRY`, `WITH`),
+        // source: 1a4e739fc88518b27f8e625dc9d268d3246a7336
+        builder.context(`PRISMA`, `HERTTONIEMI`, `[LINE]`, `010`, `7657`, `100`, `(0,0835`, `e`, `/`, `puh+0,`, `1209`, `e/min)`, `[LINE]`, `HOK-Elanto`, `Liiketoiminta`, `Oy,`, `1837957-3`, `[LINE]`, `4`, `K4`, `M000101`, `/`, `4392`, `20:51`, `9-11-2021`, `[LINE]`, `RED`, `CURRY`, `WITH`),
         builder.labels({ company: "PRISMA HERTTONIEMI", date: "9-11-2021" }),
+
         // the actual user-provided prompt
         builder.divider(),
-        builder.context(...words),
+        builder.context(...lines.reduce((acc, line, idx) => [acc, idx > 0 ? { text: `[LINE]` } : [], line].flatMap(_ => _), [] as Pick<typeof words[number], 'text'>[])),
         `Labels:`,
       );
       return [question];

@@ -29,7 +29,8 @@ async function main() {
       strategy: z.string(),
     })
     .parse(argv);
-  const knownLabels = ["TOTAL", "TOTAL_TAX_10", "TOTAL_TAX_14", "TOTAL_TAX_24", "DATE", "COMPANY", "ADDRESS"];
+  // TODO: add "TOTAL_TAX_10", "TOTAL_TAX_14" and "TOTAL_TAX_24"
+  const knownLabels = ["TOTAL", "DATE", "COMPANY", "ADDRESS"];
   const rng = seedrandom(args.seed);
   // init the dataset
   const dataset = makeLazyDataset(args.dataset);

@@ -1,0 +1,616 @@
+{
+  "meta": {
+    "datapoints": [
+      "markusy_0582cb4ee173e60e8af8a4f1c7125c1cfaa82c11",
+      "markusy_52a598ceed4b88f57e636fa72ce22c0d07382b03",
+      "reaktor_ee9ef3bf21efb59875ad7f7ac35d9fba4298adaa",
+      "markusy_d4f97b38fde8618de23bb4ea380debc90ea5fd10",
+      "reaktor_dd8eebe61acb3afce8c983b26e82b8be4cdaa277",
+      "reaktor_912c9fc0c6e0923d85a6e9b95aec187daa8418b9",
+      "reaktor_c43c89a92589112c58f24acc5937807755437a0a",
+      "reaktor_43cd0593227c9aa477a2d6c416a3c951b1d6b503",
+      "markusy_7406b1eb3cd6ee3f52170deaaba3f5500418eedd",
+      "markusy_b5f8358f31028c96ffaaca5f5e72a85078e288fb",
+      "markusy_e18d4781c7d35ced573fa6fa88a0a364b6129f1d",
+      "markusy_41d24822dcd2baef022e7cbb9448aac4c1f35b3f",
+      "reaktor_555d23bdb879f8f25bfb9331be110ba70775dd08",
+      "reaktor_223ada576f30667afc2a7340aa9b46a2835f8362",
+      "markusy_a8f3d20ad8b35261d1210ae4445ae184a194bef7",
+      "reaktor_eb56e2b1b431a9ff997d636c899791ea42095384",
+      "markusy_ae1acffc78e8cbe88fdcc3a03b47bd0b4b59dd28",
+      "reaktor_2c84b263374af6414ee6e8d456ff094f7de05486",
+      "markusy_f5786044ccaa17aca990ecf5a038f2b7dced7ba6",
+      "reaktor_c3b9951006cab69cf7a443b8b88c406bed3e60f4",
+      "markusy_439560ab6d5752daa1b05acbf8267001621be7e4",
+      "reaktor_73e945d070f702520855a6a6ebb9895b80b5e4e4",
+      "reaktor_72e04fa87a1fdb9d6440dcfa355e710327332387",
+      "markusy_1603255b5ce4f9fa1dea5cffd4607b19e64d2050",
+      "reaktor_5fe62de0d383b84611660bc95fb419a302952874",
+      "reaktor_439ce328bebbb32d83691430500c9947e39a8a04",
+      "reaktor_d7f9c38a87b22bc0dd86911634ffd548f157e182",
+      "reaktor_88526e610b9e135918aa0f15bfe474cf7b1cbfe7",
+      "reaktor_407a219fc2b75e707052b0372d5d898931250bfb",
+      "reaktor_df92349fc4caf58d5e7ef2107a710f16fc0e78ec",
+      "reaktor_9b39d5001654cb634116174883179225091aa330",
+      "reaktor_8ad277c382e62145027cf2c3a9abe7a7c88fbb36",
+      "reaktor_9479fdb71b0b927ae8c048930b1fba6d4b9df227",
+      "reaktor_e853851135f4e1c199a841e5c1ebae0c96453b51",
+      "markusy_b6fd33f80f247beefc1508c9ff098ed78e38a63a",
+      "reaktor_d54aa08587a8ecfe00eb0b62cf3aabb04790e631",
+      "markusy_21767fc3018c56883035a1e14d09697701719a6c",
+      "reaktor_92c8be40dc48c56450b058d71cc11b72e5b25bb1",
+      "markusy_32364f85e2b3462b0069d13686a2fb7cf7339a20",
+      "reaktor_a5e20b14aadf82c69b31fb00d2334cc5d19b4b46",
+      "reaktor_e4dacbc57616398799eecc3004820ca30335f6f7",
+      "reaktor_6fbb555bc415eb4d568ca61f0ddd9392e86e41a0",
+      "reaktor_e32e37784e74e813f304780122eb497b5d600942",
+      "markusy_88996aa32ea9f526c65f42b4c5aa59b3daef1056",
+      "markusy_9b0124ed501fbc98c5362dac35084816f32ce66f",
+      "markusy_7684e55b4abc699cf4eb57c12ec943ecbe02675a",
+      "markusy_bbedcd95f7639d5289aeefe5e2ffc2a11ddc2a36",
+      "markusy_d02a87516813465dfd806033d48ce0b8565f787d",
+      "markusy_88c79f75a2cf7d912a6db41ba3e67d3fc779d90f",
+      "markusy_8b1e2685032971cfb04e0d31b4c644a58ca92944",
+      "markusy_315bc75de51eb35c8995586c12d7c33811a31c82",
+      "reaktor_3a84afb895463d6ea281e623df18a2a0f360f603",
+      "reaktor_d0630b5c34c3992113b20c590774072da7400313",
+      "reaktor_bc06bf7240045cc91085061ede903f837fd14050",
+      "markusy_543ea1c628bd5163f6e1f2386655af9f03dff96b",
+      "markusy_ff07ec87a1d8c9b98e96d80b799d865cfda568fc",
+      "reaktor_263eb492b8edefd4094144c7f7755e99bbc3d0e5",
+      "reaktor_45a07dbdaab3eb8f6b665a09bde154bc4e04f6f6",
+      "reaktor_5e34e41fe3823108145cb3c1ca52b4ed37ebd6b5",
+      "markusy_a0f3b867607b68506f0f7c74cbd3814e626aa8bd",
+      "reaktor_e2982fd9b5fd655b346ff0579c3e98db7321b5d9",
+      "reaktor_f28452bbe139b41ba9492e30625cc022ff08142d",
+      "markusy_c4c5e9cea9978a22061dddfb980f23661ac16c75",
+      "markusy_0aa9d69d0ef00204f79ac909e98b7d8823d1f744",
+      "reaktor_c49936e12f9bef6f070bbb7740a75a53e95adfe7",
+      "reaktor_77652c9035d0efa5d6387867206b1e877f1a9783",
+      "reaktor_67595874e814706820cfd3f19de4d4c2ec7a3092",
+      "markusy_1ee9081600c4cbf15d4115cfdc458e27369dce57",
+      "reaktor_973af9431f0adafec92db51b252f51db651055fb",
+      "reaktor_00019d295f7c5c38858032c79e7cb667be8ff5c7",
+      "markusy_d15b03040268c978ccad69f2b9bd43c6cd5557b5",
+      "markusy_6de003a754d1f7eb8da406755b013a0c8e871080",
+      "markusy_7a0fa96b319bfccc8ffb60316960bee8449faae0",
+      "reaktor_6f5dde32f81719af90ff3235ba3c27798e02a974",
+      "markusy_3701f6a7e13fba03f538ec9443c9036c4ffd0a72",
+      "markusy_3aaf8bdec0865d21359b9b89d49824ce4afcde63",
+      "reaktor_f1c2323b8e14aaf461ad5f231a5866cba1c91f3a",
+      "reaktor_ba121d3ba7262a5111355245ac3075c6f35957ca",
+      "markusy_dbc71c1167e201278079ea22e6ea10563023b2bd",
+      "markusy_132a6f3fbf5a7d351645712a25d4188e167cb689",
+      "markusy_e74f6897d984366122d29ec37bb33663d58ae41b",
+      "markusy_1a4e739fc88518b27f8e625dc9d268d3246a7336",
+      "reaktor_2df237695296b70414b1dde5a79a7d2b4cd01ce1",
+      "markusy_e014c14de24fb15d972b65437f6078844ebbe3fb",
+      "reaktor_5cefd1b7514f3344374007bf36955db9e186e116",
+      "markusy_33233f9a5c23ce0938681e6cfcb92b6655c234f8",
+      "markusy_61cc9c5b74c6555faac6a6b129b672bd72f1071e",
+      "markusy_f757886ad0e95f5a645d20f5f9d2fc64bd98f793",
+      "reaktor_765ce6a94ac474c680cb237ad880cc6e429282c6",
+      "reaktor_76a0d4a415380d9932a989bafd339a48571bddd8",
+      "markusy_ca5658a4de4333078cf0f98bd1306b786bdc37aa",
+      "markusy_7b8b8ab8a971e6d20f9d2556e8f0e5d288cafa26",
+      "markusy_93ba9bc1a67e5a11e41ee04664a283565ee2615f",
+      "markusy_0dc94e18a7753a4364b624755c0012cc8cfd3deb",
+      "markusy_3f2ff7bcdce87f96ef2bb38363b506920bd99362",
+      "markusy_f5ecd4a52e38cf5be612ca5c7ab568d5da6fa70c",
+      "reaktor_0f0f450d4be59ea4bce664e4895c55f97f4fe861",
+      "markusy_0d4bd4424beb585e39412d360ed32b3d0776f0fa",
+      "markusy_2a666bd839c6b23a5ff06c603aff9cf12dc05a0e",
+      "reaktor_44cc698232153681a80d8dc77caf889577e7e951",
+      "reaktor_3f4a3855abc31a989cc045d1a9d0f5596a3daa84",
+      "markusy_4d8b08b95b44f8eaff38f0e5f4e9f86c9d9e3c13",
+      "reaktor_9524f980bb2a72eaf565378423c7b3f5189d4ee1",
+      "markusy_8014ffd7ed6a8cf0706f8a7afc6a9cba6a58da29",
+      "markusy_5993560b34b4e14fb5a5983bcd6d3bc0211d652f",
+      "markusy_0e6dc1ba211bf1dc29f86b2843e36af19d98193c",
+      "reaktor_1aab2f3b378bf77c3682f4deae304545ec01d4ea",
+      "markusy_0e9c1a5c500c0c42b59c888635b44b7313f21ef2",
+      "reaktor_0c9d2a1c36ba60c275a6742b743eac03e0e34a1b",
+      "reaktor_9e43a7fbb9b82c7d5b14755b479ddb00acf771c6",
+      "reaktor_540f48651a41655c4e6668de24c287d51d4c57b7",
+      "reaktor_c3788731780ee3d2ba9cd254100aae0390948202",
+      "markusy_c933d693d37fae3425768ee3bee54be1ad688cb5",
+      "markusy_5f34e910e7b5137ad4b747827c5e1409dc653efd",
+      "markusy_8225f51f3d05b9319606a0f05912ceb4ea1df83a",
+      "reaktor_5a547696f914730b99833c8b2e628a8e522b213f",
+      "reaktor_458f96e55c8d58b85eb013b4fa7eebc84366f464",
+      "markusy_bea85be0d28b6342432a090b5ff9ccb9a9305898",
+      "reaktor_b12bbb15282cc7f4fd60a7e4816bc5adf47578e2",
+      "markusy_21a3e9c7a86793f08e68477644c92693be1b267b",
+      "reaktor_6aebd6b28647b0a1466a6a9437797d3d98211817",
+      "reaktor_cb284f9533be167568f11a0d95b5163901b00953",
+      "reaktor_0095da0af4ea6e03d63df1da94371633b1b4ccb5",
+      "reaktor_7b32fc25f9518866a286c757b7dd332c96607b21",
+      "markusy_c4423b0641fcc1d4dece850c61c5571b8d303460",
+      "reaktor_0e5f14e4f101b35b8577a02f8e4159af4107e610",
+      "reaktor_bd9e7f964ffbc78b4154155b67ae4f2f4aed6296",
+      "markusy_3ecf1561f5ec3fb898052bb6faa6c7475aa40938"
+    ],
+    "dataset": "custom",
+    "limit": 128,
+    "seed": "42",
+    "strategy": "simple",
+    "timestamp": "2023-04-17T17:21:41.067Z"
+  },
+  "aggregated": {
+    "f1": 0.867,
+    "recall": 0.856,
+    "precision": 0.879
+  },
+  "by_label": [
+    {
+      "label": "TOTAL",
+      "f1": 0.973,
+      "precision": 0.969,
+      "recall": 0.976
+    },
+    {
+      "label": "DATE",
+      "f1": 0.924,
+      "precision": 0.991,
+      "recall": 0.866
+    },
+    {
+      "label": "COMPANY",
+      "f1": 0.741,
+      "precision": 0.744,
+      "recall": 0.738
+    },
+    {
+      "label": "ADDRESS",
+      "f1": 0.818,
+      "precision": 0.8,
+      "recall": 0.837
+    }
+  ],
+  "missed": [
+    {
+      "id": "reaktor_223ada576f30667afc2a7340aa9b46a2835f8362",
+      "label": "COMPANY",
+      "groundTruth": "Lidl Suomi Ky",
+      "predicted": "LIDL"
+    },
+    {
+      "id": "reaktor_223ada576f30667afc2a7340aa9b46a2835f8362",
+      "label": "ADDRESS",
+      "groundTruth": "Ratavartijankatu 3",
+      "predicted": "Ratavartijankatu 3, Helsinki"
+    },
+    {
+      "id": "markusy_d4f97b38fde8618de23bb4ea380debc90ea5fd10",
+      "label": "COMPANY",
+      "groundTruth": "Momotoko Citycenter",
+      "predicted": "MOMO TOKO RAMEN RESTAURANT"
+    },
+    {
+      "id": "markusy_b5f8358f31028c96ffaaca5f5e72a85078e288fb",
+      "label": "DATE",
+      "groundTruth": "1.11.2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_912c9fc0c6e0923d85a6e9b95aec187daa8418b9",
+      "label": "COMPANY",
+      "groundTruth": "Haukilahden paviljonki",
+      "predicted": "Restfer Oy"
+    },
+    {
+      "id": "reaktor_c43c89a92589112c58f24acc5937807755437a0a",
+      "label": "ADDRESS",
+      "groundTruth": "Niittymaantie 2",
+      "predicted": "Niittymaantie 2, Espoo - Niittykumpu"
+    },
+    {
+      "id": "reaktor_dd8eebe61acb3afce8c983b26e82b8be4cdaa277",
+      "label": "COMPANY",
+      "groundTruth": "SHELL KARHUSAARI",
+      "predicted": "WINBERG & WINBERG FO 0627596-1"
+    },
+    {
+      "id": "reaktor_dd8eebe61acb3afce8c983b26e82b8be4cdaa277",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "BJÖRNSÖ KARHUSAARI (09) 8771095"
+    },
+    {
+      "id": "reaktor_ee9ef3bf21efb59875ad7f7ac35d9fba4298adaa",
+      "label": "DATE",
+      "groundTruth": "26.11.2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_ee9ef3bf21efb59875ad7f7ac35d9fba4298adaa",
+      "label": "COMPANY",
+      "groundTruth": "APTEEKKI KOILLISKESKUS",
+      "predicted": "Your Health Partner Oy (2279982-9) Apteekki Koilliskeskus (2277503-4)"
+    },
+    {
+      "id": "markusy_ae1acffc78e8cbe88fdcc3a03b47bd0b4b59dd28",
+      "label": "COMPANY",
+      "groundTruth": "ESPRESSO HOUSE HALL OF TRIPLA",
+      "predicted": "ESPRESSO HOUSE"
+    },
+    {
+      "id": "reaktor_73e945d070f702520855a6a6ebb9895b80b5e4e4",
+      "label": "COMPANY",
+      "groundTruth": "shelter",
+      "predicted": "HF Restaurants Oy (2735025-4)"
+    },
+    {
+      "id": "reaktor_c3b9951006cab69cf7a443b8b88c406bed3e60f4",
+      "label": "COMPANY",
+      "groundTruth": "KUKKATALO critta",
+      "predicted": "Kukkatalo Maritta Oy"
+    },
+    {
+      "id": "reaktor_5fe62de0d383b84611660bc95fb419a302952874",
+      "label": "TOTAL",
+      "groundTruth": null,
+      "predicted": "5729.50"
+    },
+    {
+      "id": "reaktor_2c84b263374af6414ee6e8d456ff094f7de05486",
+      "label": "COMPANY",
+      "groundTruth": "Salutorget",
+      "predicted": "Salutorget SCANDINAVIAN BISTRO"
+    },
+    {
+      "id": "reaktor_407a219fc2b75e707052b0372d5d898931250bfb",
+      "label": "ADDRESS",
+      "groundTruth": "Eteläranta 16 , 00130 HELSINKI",
+      "predicted": "16 , 00130 HELSINKI Eteläranta"
+    },
+    {
+      "id": "reaktor_439ce328bebbb32d83691430500c9947e39a8a04",
+      "label": "COMPANY",
+      "groundTruth": "Kaarle XII",
+      "predicted": "RAVINTOLA KAARLE XII"
+    },
+    {
+      "id": "markusy_21767fc3018c56883035a1e14d09697701719a6c",
+      "label": "DATE",
+      "groundTruth": "23-01-2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_d54aa08587a8ecfe00eb0b62cf3aabb04790e631",
+      "label": "ADDRESS",
+      "groundTruth": "Ratavartijankatu 3",
+      "predicted": "Ratavartijankatu 3, Helsinki - Pasila"
+    },
+    {
+      "id": "reaktor_e4dacbc57616398799eecc3004820ca30335f6f7",
+      "label": "DATE",
+      "groundTruth": "22.10.21",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_e4dacbc57616398799eecc3004820ca30335f6f7",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "ITANIITYNTIE 15 RAISIO 21280"
+    },
+    {
+      "id": "reaktor_e32e37784e74e813f304780122eb497b5d600942",
+      "label": "COMPANY",
+      "groundTruth": "Linnanmäki",
+      "predicted": "Lasten päivän Säätiö sr - Linnanmäen Huvipuisto"
+    },
+    {
+      "id": "markusy_7684e55b4abc699cf4eb57c12ec943ecbe02675a",
+      "label": "DATE",
+      "groundTruth": "16-01-2021",
+      "predicted": null
+    },
+    {
+      "id": "markusy_9b0124ed501fbc98c5362dac35084816f32ce66f",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "HELSINKI - HELSINGFORS"
+    },
+    {
+      "id": "markusy_88c79f75a2cf7d912a6db41ba3e67d3fc779d90f",
+      "label": "DATE",
+      "groundTruth": "10.10.2021",
+      "predicted": null
+    },
+    {
+      "id": "markusy_88c79f75a2cf7d912a6db41ba3e67d3fc779d90f",
+      "label": "COMPANY",
+      "groundTruth": "K - Supermarket Red1",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_d0630b5c34c3992113b20c590774072da7400313",
+      "label": "COMPANY",
+      "groundTruth": "P - Ratina Finnpark Oy",
+      "predicted": "P - Ratina"
+    },
+    {
+      "id": "reaktor_3a84afb895463d6ea281e623df18a2a0f360f603",
+      "label": "DATE",
+      "groundTruth": "19.01.20_15",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_3a84afb895463d6ea281e623df18a2a0f360f603",
+      "label": "COMPANY",
+      "groundTruth": "TOKMANNI HELSINKI CITYCENTER",
+      "predicted": "TOKMANNI OY"
+    },
+    {
+      "id": "reaktor_45a07dbdaab3eb8f6b665a09bde154bc4e04f6f6",
+      "label": "COMPANY",
+      "groundTruth": "Ravintola Rioni Turku",
+      "predicted": "RIONI"
+    },
+    {
+      "id": "reaktor_e2982fd9b5fd655b346ff0579c3e98db7321b5d9",
+      "label": "COMPANY",
+      "groundTruth": "Alko Oy",
+      "predicted": "Alko Oy # 5"
+    },
+    {
+      "id": "markusy_c4c5e9cea9978a22061dddfb980f23661ac16c75",
+      "label": "DATE",
+      "groundTruth": "12-10-2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_f28452bbe139b41ba9492e30625cc022ff08142d",
+      "label": "ADDRESS",
+      "groundTruth": "Kluuvikatu 3",
+      "predicted": "Fazer Café Kluuvikatu 3"
+    },
+    {
+      "id": "reaktor_c49936e12f9bef6f070bbb7740a75a53e95adfe7",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "HELSINKI - HELSINGFORS"
+    },
+    {
+      "id": "markusy_0aa9d69d0ef00204f79ac909e98b7d8823d1f744",
+      "label": "DATE",
+      "groundTruth": "23.11.2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_263eb492b8edefd4094144c7f7755e99bbc3d0e5",
+      "label": "COMPANY",
+      "groundTruth": "K - Market Herkkulinna",
+      "predicted": "K - Market Herkkulinna, K - Market Kerttuli, K - Market Ruokatori, K - Market Vartiovuori, Neljän K - Marketin Taikaa"
+    },
+    {
+      "id": "reaktor_77652c9035d0efa5d6387867206b1e877f1a9783",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "Joensuu"
+    },
+    {
+      "id": "reaktor_67595874e814706820cfd3f19de4d4c2ec7a3092",
+      "label": "COMPANY",
+      "groundTruth": "Lähtee län Ulkoilualue",
+      "predicted": "Nature events Oy"
+    },
+    {
+      "id": "reaktor_00019d295f7c5c38858032c79e7cb667be8ff5c7",
+      "label": "DATE",
+      "groundTruth": "21.8.2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_973af9431f0adafec92db51b252f51db651055fb",
+      "label": "ADDRESS",
+      "groundTruth": "Tolsantie 16 , 02400",
+      "predicted": "Tolsantie 16 , 02400 ' Kirkkonummi"
+    },
+    {
+      "id": "markusy_7a0fa96b319bfccc8ffb60316960bee8449faae0",
+      "label": "TOTAL",
+      "groundTruth": "19.4",
+      "predicted": "19.46"
+    },
+    {
+      "id": "markusy_6de003a754d1f7eb8da406755b013a0c8e871080",
+      "label": "COMPANY",
+      "groundTruth": "Bangkok",
+      "predicted": "BANGKOKOS THAI STREET FUSION KITCHEN"
+    },
+    {
+      "id": "reaktor_6f5dde32f81719af90ff3235ba3c27798e02a974",
+      "label": "COMPANY",
+      "groundTruth": "YLIOPISTON APTEEKKI ISO OMENA",
+      "predicted": "MULL"
+    },
+    {
+      "id": "reaktor_5cefd1b7514f3344374007bf36955db9e186e116",
+      "label": "TOTAL",
+      "groundTruth": "29,95",
+      "predicted": "29.97"
+    },
+    {
+      "id": "reaktor_76a0d4a415380d9932a989bafd339a48571bddd8",
+      "label": "TOTAL",
+      "groundTruth": "26,30",
+      "predicted": "26.80"
+    },
+    {
+      "id": "reaktor_76a0d4a415380d9932a989bafd339a48571bddd8",
+      "label": "ADDRESS",
+      "groundTruth": "Iso Roba 1",
+      "predicted": null
+    },
+    {
+      "id": "markusy_33233f9a5c23ce0938681e6cfcb92b6655c234f8",
+      "label": "DATE",
+      "groundTruth": "11.12.2021",
+      "predicted": null
+    },
+    {
+      "id": "markusy_ca5658a4de4333078cf0f98bd1306b786bdc37aa",
+      "label": "COMPANY",
+      "groundTruth": "Lidl Suomi Ky Helsinki - Citycenter",
+      "predicted": "Lidl Suomi Ky"
+    },
+    {
+      "id": "markusy_ca5658a4de4333078cf0f98bd1306b786bdc37aa",
+      "label": "ADDRESS",
+      "groundTruth": "Kaivokatu 8",
+      "predicted": "Kaivokatu 8, Helsinki - Citycenter"
+    },
+    {
+      "id": "markusy_0d4bd4424beb585e39412d360ed32b3d0776f0fa",
+      "label": "DATE",
+      "groundTruth": "31-03-2021",
+      "predicted": null
+    },
+    {
+      "id": "markusy_0d4bd4424beb585e39412d360ed32b3d0776f0fa",
+      "label": "COMPANY",
+      "groundTruth": "K - CITYMARKET TURKU KUPITTAA",
+      "predicted": "Kesko Oyj"
+    },
+    {
+      "id": "markusy_0d4bd4424beb585e39412d360ed32b3d0776f0fa",
+      "label": "ADDRESS",
+      "groundTruth": "Uudenmaantie 17 , 20700 TURKU",
+      "predicted": null
+    },
+    {
+      "id": "markusy_93ba9bc1a67e5a11e41ee04664a283565ee2615f",
+      "label": "DATE",
+      "groundTruth": "1-03-2021",
+      "predicted": null
+    },
+    {
+      "id": "markusy_7b8b8ab8a971e6d20f9d2556e8f0e5d288cafa26",
+      "label": "COMPANY",
+      "groundTruth": "FOOD MARKET HERKKU",
+      "predicted": "FOOD MARKET HERKKU DELIKATESSEN KESKUSTA"
+    },
+    {
+      "id": "reaktor_0f0f450d4be59ea4bce664e4895c55f97f4fe861",
+      "label": "COMPANY",
+      "groundTruth": "HFR statants Oy",
+      "predicted": "HFR statants Oy (2735025-4)"
+    },
+    {
+      "id": "markusy_3f2ff7bcdce87f96ef2bb38363b506920bd99362",
+      "label": "DATE",
+      "groundTruth": "02/13/2018",
+      "predicted": "2018-02-13"
+    },
+    {
+      "id": "markusy_3f2ff7bcdce87f96ef2bb38363b506920bd99362",
+      "label": "COMPANY",
+      "groundTruth": "SAPPEEN MATKAILUKESKUS",
+      "predicted": "SAPPEE SAPPEEN MATKAILUKESKUS"
+    },
+    {
+      "id": "reaktor_44cc698232153681a80d8dc77caf889577e7e951",
+      "label": "COMPANY",
+      "groundTruth": "SUOMALAINEN KIRJAKAUPPA",
+      "predicted": "MULL"
+    },
+    {
+      "id": "reaktor_44cc698232153681a80d8dc77caf889577e7e951",
+      "label": "ADDRESS",
+      "groundTruth": "Turunlimantie 8 00930 HE SINKI",
+      "predicted": "Turunlimantie 8 , 00930 Helsinki Puh.010 4054300 www.suomalainen.com"
+    },
+    {
+      "id": "reaktor_1aab2f3b378bf77c3682f4deae304545ec01d4ea",
+      "label": "DATE",
+      "groundTruth": "31.05.19",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_1aab2f3b378bf77c3682f4deae304545ec01d4ea",
+      "label": "ADDRESS",
+      "groundTruth": "Niittymaantie 2",
+      "predicted": "Niittymaantie 2, Espoo - Niittykumpu"
+    },
+    {
+      "id": "markusy_5993560b34b4e14fb5a5983bcd6d3bc0211d652f",
+      "label": "DATE",
+      "groundTruth": "1.4.2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_9e43a7fbb9b82c7d5b14755b479ddb00acf771c6",
+      "label": "COMPANY",
+      "groundTruth": "Neste Express Helsinki Salmisaari",
+      "predicted": "NESTE"
+    },
+    {
+      "id": "reaktor_9e43a7fbb9b82c7d5b14755b479ddb00acf771c6",
+      "label": "ADDRESS",
+      "groundTruth": "Energiakatu 10",
+      "predicted": "Energiakatu 10, Helsinki Salmisaari"
+    },
+    {
+      "id": "markusy_0e9c1a5c500c0c42b59c888635b44b7313f21ef2",
+      "label": "COMPANY",
+      "groundTruth": "TRIPLA RUOKARAVINTOLAT HELSINKI",
+      "predicted": "TRIPLA RUOKARAVINTOLAT HELSINKI FREDDE'S"
+    },
+    {
+      "id": "reaktor_5a547696f914730b99833c8b2e628a8e522b213f",
+      "label": "DATE",
+      "groundTruth": "1-08-2021",
+      "predicted": null
+    },
+    {
+      "id": "reaktor_5a547696f914730b99833c8b2e628a8e522b213f",
+      "label": "COMPANY",
+      "groundTruth": "PRISMA HERTTONIEMI",
+      "predicted": "RAKSPORTSIS RAHSAN"
+    },
+    {
+      "id": "reaktor_b12bbb15282cc7f4fd60a7e4816bc5adf47578e2",
+      "label": "COMPANY",
+      "groundTruth": "STARK HELSINKI , SUUTARILA",
+      "predicted": "STARK"
+    },
+    {
+      "id": "reaktor_b12bbb15282cc7f4fd60a7e4816bc5adf47578e2",
+      "label": "ADDRESS",
+      "groundTruth": null,
+      "predicted": "HELSINKI , SUUTARILA"
+    },
+    {
+      "id": "markusy_21a3e9c7a86793f08e68477644c92693be1b267b",
+      "label": "ADDRESS",
+      "groundTruth": "Linnanrakentajantie 4",
+      "predicted": "Linnanrakentajantie 4, Helsinki - Herttoniemi"
+    },
+    {
+      "id": "markusy_c4423b0641fcc1d4dece850c61c5571b8d303460",
+      "label": "COMPANY",
+      "groundTruth": "Gigantti Forum",
+      "predicted": "GIGANTTIS"
+    },
+    {
+      "id": "reaktor_0095da0af4ea6e03d63df1da94371633b1b4ccb5",
+      "label": "COMPANY",
+      "groundTruth": "Lidl Suomi",
+      "predicted": "Lidl Suomi - ilo palvella"
+    },
+    {
+      "id": "reaktor_0095da0af4ea6e03d63df1da94371633b1b4ccb5",
+      "label": "ADDRESS",
+      "groundTruth": "Ratavartijankatu 3",
+      "predicted": "Ratavartijankatu 3, Helsinki - Pasila"
+    },
+    {
+      "id": "reaktor_0e5f14e4f101b35b8577a02f8e4159af4107e610",
+      "label": "COMPANY",
+      "groundTruth": "ORIGINAL SOKOS HOTEL HELSINKI",
+      "predicted": "SOKOTEL OY"
+    }
+  ]
+}
